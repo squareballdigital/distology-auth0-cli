@@ -1,6 +1,6 @@
 {
   "name": "distologystudio-auth0-cli",
-  "version": "1.0.0",
+  "version": "0.1.0-alpha",
   "engines": {
     "node": ">=18.0.0"
   },
