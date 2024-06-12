@@ -2,6 +2,11 @@
 
 import inquirer from "inquirer";
 import shell from "shelljs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 inquirer
   .prompt([
@@ -120,13 +125,20 @@ inquirer
                               console.log("Error creating the folder");
                               return;
                             }
+
+                            // Construct the path to the spa/react folder in the installed package
+                            const sourceFolder = path.resolve(
+                              __dirname,
+                              "spa/react"
+                            );
                             const moveFolder = shell.exec(
-                              `cp -r "./spa/react/"* "./${reactFolder}/"`
+                              `cp -r "${sourceFolder}"/* "./${reactFolder}/"`
                             );
                             if (moveFolder.code !== 0) {
                               console.log("Error moving the files");
                               return;
                             }
+
                             shell.cd(`${reactFolder}/src`); // change directory
                             shell.echo(configContent).to("auth_config.json"); // create file and write content to it
                             shell.cd("../"); // change directory
@@ -134,8 +146,6 @@ inquirer
                             shell.exec(`npm install`, { silent: true });
                             console.log("Starting the application...");
                             shell.exec(`npm run start`);
-                            // shell.exec("npm install"); // install dependencies
-                            // shell.exec("npm start"); // start the application
                           });
                       });
                   });
