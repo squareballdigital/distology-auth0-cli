@@ -1,0 +1,25 @@
+{
+  "name": "distologystudio-auth0-cli",
+  "version": "1.0.0",
+  "description": "A CLI for bootstrapping Auth0 applications",
+  "main": "./index.js",
+  "type": "module",
+  "bin": "./index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "inquirer": "^9.2.23",
+    "shelljs": "^0.8.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/squareballdigital/distology-auth0-cli.git"
+  },
+  "author": "Emad Dehnavi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/squareballdigital/distology-auth0-cli/issues"
+  },
+  "homepage": "https://github.com/squareballdigital/distology-auth0-cli#readme"
+}
