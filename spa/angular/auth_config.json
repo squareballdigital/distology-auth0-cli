@@ -2,7 +2,7 @@
   "domain": "",
   "clientId": "",
   "authorizationParams": {
-    "audience": "{yourApiIdentifier}"
+    "audience": ""
   },
   "apiUri": "http://localhost:3001",
   "appUri": "http://localhost:4200",
