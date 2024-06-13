@@ -43,8 +43,6 @@ inquirer
         return;
       }
 
-      const tempFolderName = "temp-clone-folder";
-
       if (answer.applicationType === "Single Page Application") {
         inquirer
           .prompt([
@@ -53,13 +51,13 @@ inquirer
               name: "technology",
               message: "What technology do you want to use?",
               default: "React",
-              choices: ["React", "Angular", "Vue", "Javascript"],
+              choices: ["React", "Vue", "Angular", "Javascript"],
             },
           ])
           .then((answer) => {
             switch (answer.technology) {
               case "React":
-                let config = {
+                let reactConfig = {
                   domain: "",
                   clientId: "",
                   audience: "",
@@ -75,7 +73,7 @@ inquirer
                       console.log("No domain provided! Exiting...");
                       return;
                     }
-                    config.domain = answer.auth0Domain;
+                    reactConfig.domain = answer.auth0Domain;
                     inquirer
                       .prompt({
                         type: "question",
@@ -87,7 +85,7 @@ inquirer
                           console.log("No clientId provided! Exiting...");
                           return;
                         }
-                        config.clientId = answer.auth0ClientId;
+                        reactConfig.clientId = answer.auth0ClientId;
                         inquirer
                           .prompt({
                             type: "question",
@@ -99,19 +97,18 @@ inquirer
                               console.log("No audience provided! Exiting...");
                               return;
                             }
-                            config.audience = answer.auth0Audience;
+                            reactConfig.audience = answer.auth0Audience;
 
-                            console.log("config: ", config);
                             if (
-                              !config.domain ||
-                              !config.clientId ||
-                              !config.audience
+                              !reactConfig.domain ||
+                              !reactConfig.clientId ||
+                              !reactConfig.audience
                             ) {
                               console.log("Missing configuration! Exiting...");
                               return;
                             }
                             const configContent = JSON.stringify(
-                              config,
+                              reactConfig,
                               null,
                               2
                             ); // convert object to string with 2 spaces indentation
@@ -150,10 +147,71 @@ inquirer
                       });
                   });
                 break;
-              case "Angular":
-                console.log("Not supported yet");
-                break;
               case "Vue":
+                let vueConfig = {
+                  domain: "",
+                  clientId: "",
+                };
+                inquirer
+                  .prompt({
+                    type: "question",
+                    name: "auth0Domain",
+                    message: "Auth0/Tenant Domain: ",
+                  })
+                  .then((answer) => {
+                    if (!answer.auth0Domain) {
+                      console.log("No domain provided! Exiting...");
+                      return;
+                    }
+                    vueConfig.domain = answer.auth0Domain;
+                    inquirer
+                      .prompt({
+                        type: "question",
+                        name: "auth0ClientId",
+                        message: "clientId: ",
+                      })
+                      .then((answer) => {
+                        if (!answer.auth0ClientId) {
+                          console.log("No clientId provided! Exiting...");
+                          return;
+                        }
+                        vueConfig.clientId = answer.auth0ClientId;
+                        const configContent = JSON.stringify(
+                          vueConfig,
+                          null,
+                          2
+                        ); // convert object to string with 2 spaces indentation
+
+                        console.log("Preparing the React application...");
+                        const vueFolder = "auth0-vue-poc";
+                        const createFolder = shell.exec(
+                          `mkdir -p ${vueFolder}`
+                        );
+                        if (createFolder.code !== 0) {
+                          console.log("Error creating the folder");
+                          return;
+                        }
+
+                        // Construct the path to the spa/react folder in the installed package
+                        const sourceFolder = path.resolve(__dirname, "spa/vue");
+                        const moveFolder = shell.exec(
+                          `cp -r "${sourceFolder}"/* "./${vueFolder}/"`
+                        );
+                        if (moveFolder.code !== 0) {
+                          console.log("Error moving the files");
+                          return;
+                        }
+
+                        shell.cd(`${vueFolder}`); // change directory
+                        shell.echo(configContent).to("auth_config.json"); // create file and write content to it
+                        console.log("Installing dependencies...");
+                        shell.exec(`npm install`, { silent: true });
+                        console.log("Starting the application...");
+                        shell.exec(`npm run serve`);
+                      });
+                  });
+                break;
+              case "Angular":
                 console.log("Not supported yet");
                 break;
               case "Javascript":
