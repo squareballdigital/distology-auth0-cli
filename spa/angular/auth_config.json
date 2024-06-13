@@ -1,0 +1,10 @@
+{
+  "domain": "midalia-dev.eu.auth0.com",
+  "clientId": "DigGs076tpsGwjrVQadZqG9H1oMkDEG9",
+  "authorizationParams": {
+    "audience": "{yourApiIdentifier}"
+  },
+  "apiUri": "http://localhost:3001",
+  "appUri": "http://localhost:4200",
+  "errorPath": "/error"
+}
