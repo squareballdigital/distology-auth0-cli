@@ -2,6 +2,8 @@
 
 `distology-auth0-cli` is a Command Line Interface (CLI) tool designed to help you quickly bootstrap Auth0 applications. It streamlines the setup process, enabling you to get started with Auth0 seamlessly, it will use the official Auth0 samples as it's core.
 
+At the moment, we are in early first version and the starter apps for React and Vue for SPA applications are in place, but we going to add support more frameworks as we go.
+
 ## How to Use
 
 ### Installation
