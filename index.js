@@ -212,7 +212,78 @@ inquirer
                   });
                 break;
               case "Angular":
-                console.log("Not supported yet");
+                let angularConfig = {
+                  domain: "",
+                  clientId: "",
+                  authorizationParams: {
+                    audience: "",
+                  },
+                  apiUri: "http://localhost:3001",
+                  appUri: "http://localhost:4200",
+                  errorPath: "/error",
+                };
+
+                inquirer
+                  .prompt({
+                    type: "question",
+                    name: "auth0Domain",
+                    message: "Auth0/Tenant Domain: ",
+                  })
+                  .then((answer) => {
+                    if (!answer.auth0Domain) {
+                      console.log("No domain provided! Exiting...");
+                      return;
+                    }
+                    angularConfig.domain = answer.auth0Domain;
+                    inquirer
+                      .prompt({
+                        type: "question",
+                        name: "auth0ClientId",
+                        message: "clientId: ",
+                      })
+                      .then((answer) => {
+                        if (!answer.auth0ClientId) {
+                          console.log("No clientId provided! Exiting...");
+                          return;
+                        }
+                        angularConfig.clientId = answer.auth0ClientId;
+                        const configContent = JSON.stringify(
+                          angularConfig,
+                          null,
+                          2
+                        ); // convert object to string with 2 spaces indentation
+
+                        console.log("Preparing the React application...");
+                        const angularFolder = "auth0-angular-poc";
+                        const createFolder = shell.exec(
+                          `mkdir -p ${angularFolder}`
+                        );
+                        if (createFolder.code !== 0) {
+                          console.log("Error creating the folder");
+                          return;
+                        }
+
+                        // Construct the path to the spa/react folder in the installed package
+                        const sourceFolder = path.resolve(
+                          __dirname,
+                          "spa/angular"
+                        );
+                        const moveFolder = shell.exec(
+                          `cp -r "${sourceFolder}"/* "./${angularFolder}/"`
+                        );
+                        if (moveFolder.code !== 0) {
+                          console.log("Error moving the files");
+                          return;
+                        }
+
+                        shell.cd(`${angularFolder}`); // change directory
+                        shell.echo(configContent).to("auth_config.json"); // create file and write content to it
+                        console.log("Installing dependencies...");
+                        shell.exec(`npm install`, { silent: true });
+                        console.log("Starting the application...");
+                        shell.exec(`npm run start`);
+                      });
+                  });
                 break;
               case "Javascript":
                 console.log("Not supported yet");

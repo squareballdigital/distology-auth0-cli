@@ -11,7 +11,7 @@
       <div class="logo"></div>
       <p>
         Sample project provided by
-        <a href="https://auth0.com">Auth0</a>
+        <a href="https://distologystudios.com/">Distology</a>
       </p>
     </footer>
   </div>

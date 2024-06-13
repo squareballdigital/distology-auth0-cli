@@ -1,0 +1,18 @@
+
+.navbar { 
+    background-color: #8c1c5b!important;
+  }
+  
+  .navbar-nav .nav-link {
+    color: white;
+  }
+  
+  .btn-primary { 
+    background-color: purple;
+  }
+  
+  .logo {
+    background-image: url(../../../assets/logo-main.png);
+    width: 7rem;
+  }
+  
